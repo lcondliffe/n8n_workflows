@@ -1,0 +1,169 @@
+={
+  "createdAt": "2025-08-01T12:47:46.935Z",
+  "updatedAt": "2025-08-01T13:06:40.000Z",
+  "id": "YgvpIC5TabhpbaIX",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bb60637a-b786-4dff-9678-708ffc058117",
+      "name": "When clicking 'Execute workflow'"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/api/v1/workflows",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "af9e4506-30c8-41aa-bd8d-a4b90d15e967",
+      "name": "GET n8n workflows (localhost API)",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "4EvypRLztI6hD99x",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        464,
+        0
+      ],
+      "id": "a15ddd51-fbc9-4c56-883a-ee6c8279ca5e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "lcondliffe",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n_workflows",
+          "mode": "name"
+        },
+        "filePath": "=workflows/{{ new Date().toISOString().split('T')[0] }}/{{ $json.name.replace(/[^a-zA-Z0-9]/g, '_') }}.json",
+        "fileContent": "={{ JSON.stringify($json, null, 2) }}",
+        "commitMessage": "=n8n workflow backup: {{ $json.name }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "42fc7c15-20f5-4c5e-bbec-5c299f847444",
+      "name": "Create workflow file",
+      "webhookId": "5d9baf76-fdfc-4c11-9294-4999db09b625",
+      "credentials": {
+        "githubApi": {
+          "id": "Kr89ckTVj1skfbxF",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fae229bf-044d-4f63-a110-b167393a97ff",
+              "name": "name",
+              "value": "={{ $json.data.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        736,
+        0
+      ],
+      "id": "35271094-0e10-4bc1-89a1-1e4588c1cdd8",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "GET n8n workflows (localhost API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET n8n workflows (localhost API)": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create workflow file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "025f2c51-9acf-4d86-9132-a0a1290691f2",
+  "triggerCount": 0,
+  "tags": []
+}
