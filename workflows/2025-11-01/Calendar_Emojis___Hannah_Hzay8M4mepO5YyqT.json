@@ -1,0 +1,172 @@
+={
+  "createdAt": "2025-08-23T11:29:57.101Z",
+  "updatedAt": "2025-09-26T19:32:24.000Z",
+  "id": "Hzay8M4mepO5YyqT",
+  "name": "Calendar Emojis - Hannah",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=For the following calendar event, your task is to output ONLY an emoji that best represents the title of the calendar event given.\n\n {{ $json.summary }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "908f2b21-6aa0-4911-b14a-0697db39df53",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        256,
+        208
+      ],
+      "id": "c0dc14be-b102-4128-a018-d60edd3825b3",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "o8LHlHueJiKqTdCz",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "hannahjoan46@googlemail.com",
+          "mode": "list",
+          "cachedResultName": "hannahjoan46@googlemail.com"
+        },
+        "eventId": "={{ $('New Event - Hannah').item.json.id }}",
+        "updateFields": {
+          "summary": "={{ $json.output }}{{ $('New Event - Hannah').item.json.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        0
+      ],
+      "id": "fc96ac4d-3b28-47a7-b496-847c4d705fce",
+      "name": "Add Emoji",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 5,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "value": "hannahjoan46@googlemail.com",
+          "mode": "list",
+          "cachedResultName": "hannahjoan46@googlemail.com"
+        },
+        "triggerOn": "=eventCreated",
+        "options": {
+          "matchTerm": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "34d8da96-16b9-4afd-a406-932926951542",
+      "name": "New Event - Hannah",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Add Emoji",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Event - Hannah": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:New Event - Hannah": {
+      "lastTimeChecked": "2025-10-31T19:40:41Z"
+    },
+    "node:New Event - Luke": {
+      "lastTimeChecked": "2025-08-23T11:29:47Z"
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e619dbc9-edbe-4add-ac7a-6056683bb3a5",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-23T11:29:57.109Z",
+      "updatedAt": "2025-08-23T11:29:57.109Z",
+      "role": "workflow:owner",
+      "workflowId": "Hzay8M4mepO5YyqT",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "tags": []
+}
