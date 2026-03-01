@@ -1,0 +1,120 @@
+={
+  "updatedAt": "2026-02-28T06:49:41.274Z",
+  "createdAt": "2026-02-27T10:30:01.705Z",
+  "id": "8I91sTo25VuAKURf",
+  "name": "Docker Data Backup",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "f1a1b1c1-d1e1-f1a1-b1c1-d1e1f1a1b1c1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "command",
+        "operation": "execute",
+        "cwd": "/",
+        "command": "bash /usr/local/bin/docker_backup.sh"
+      },
+      "id": "a2b2c2d2-e2f2-a2b2-c2d2-e2f2a2b2c2d2",
+      "name": "Backup",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        464,
+        304
+      ],
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "sQRoEKIsIShs2rC4",
+          "name": "dkr-prd-01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo umount /mnt/nas_backup/docker_data"
+      },
+      "id": "b3c3d3e3-f3a3-b3c3-d3e3-f3a3b3c3d3e3",
+      "name": "Unmount",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        688,
+        304
+      ],
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "sQRoEKIsIShs2rC4",
+          "name": "dkr-prd-01"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backup": {
+      "main": [
+        [
+          {
+            "node": "Unmount",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5f066b91-ce9d-45da-ba4f-1a8ccbc7b6e2",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-27T10:30:01.717Z",
+      "createdAt": "2026-02-27T10:30:01.717Z",
+      "role": "workflow:owner",
+      "workflowId": "8I91sTo25VuAKURf",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
