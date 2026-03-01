@@ -1,0 +1,356 @@
+={
+  "updatedAt": "2026-02-04T15:56:49.129Z",
+  "createdAt": "2026-02-04T14:19:52.888Z",
+  "id": "NVwZQBC9LZGbZLfVZVINJ",
+  "name": "AGENT_TOOL - Read Context",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "filename"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -144,
+        -32
+      ],
+      "id": "859a1fff-cb53-4c67-a3ee-7c26cd7e280a",
+      "name": "When Executed by Another Workflow",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ef0b6ce5-99a0-4f0a-9aae-272d388b75c8",
+              "name": "filename",
+              "value": "={{ $json.filename }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        -32
+      ],
+      "id": "9892ac66-9b98-432e-8e67-745d8dc99ea6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        464,
+        -32
+      ],
+      "id": "0f6486ab-96d4-4eb3-92b8-6b329d2025bf",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "vy960WaFJtDDBa4m",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $json.filename }}",
+        "filter": {
+          "includeTrashed": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        256,
+        -32
+      ],
+      "id": "8d1b1c3d-01f1-4350-8636-854eb1696b38",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "vy960WaFJtDDBa4m",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        656,
+        -32
+      ],
+      "id": "1442d7c9-1d02-46b9-83d6-d0e8531a50b5",
+      "name": "Extract from File"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "filename": "PERSONA.md"
+        }
+      }
+    ]
+  },
+  "versionId": "9cc6efeb-a644-4530-bc17-d42fc7ed03e5",
+  "activeVersionId": "9cc6efeb-a644-4530-bc17-d42fc7ed03e5",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-04T14:19:52.893Z",
+      "createdAt": "2026-02-04T14:19:52.893Z",
+      "role": "workflow:owner",
+      "workflowId": "NVwZQBC9LZGbZLfVZVINJ",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-02-04T15:56:52.000Z",
+    "createdAt": "2026-02-04T15:56:49.130Z",
+    "versionId": "9cc6efeb-a644-4530-bc17-d42fc7ed03e5",
+    "workflowId": "NVwZQBC9LZGbZLfVZVINJ",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "filename"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -144,
+          -32
+        ],
+        "id": "859a1fff-cb53-4c67-a3ee-7c26cd7e280a",
+        "name": "When Executed by Another Workflow",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ef0b6ce5-99a0-4f0a-9aae-272d388b75c8",
+                "name": "filename",
+                "value": "={{ $json.filename }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          64,
+          -32
+        ],
+        "id": "9892ac66-9b98-432e-8e67-745d8dc99ea6",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          464,
+          -32
+        ],
+        "id": "0f6486ab-96d4-4eb3-92b8-6b329d2025bf",
+        "name": "Download file",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "vy960WaFJtDDBa4m",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "queryString": "={{ $json.filename }}",
+          "filter": {
+            "includeTrashed": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          256,
+          -32
+        ],
+        "id": "8d1b1c3d-01f1-4350-8636-854eb1696b38",
+        "name": "Search files and folders",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "vy960WaFJtDDBa4m",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          656,
+          -32
+        ],
+        "id": "1442d7c9-1d02-46b9-83d6-d0e8531a50b5",
+        "name": "Extract from File"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Search files and folders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Search files and folders": {
+        "main": [
+          [
+            {
+              "node": "Download file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download file": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Luke Condliffe",
+    "name": "0.0.2",
+    "description": "",
+    "autosaved": false
+  },
+  "tags": []
+}
