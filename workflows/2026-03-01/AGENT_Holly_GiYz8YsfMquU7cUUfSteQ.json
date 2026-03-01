@@ -1,0 +1,953 @@
+={
+  "updatedAt": "2026-02-16T19:34:33.064Z",
+  "createdAt": "2026-02-04T08:12:21.078Z",
+  "id": "GiYz8YsfMquU7cUUfSteQ",
+  "name": "AGENT_Holly",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "availableInChat": true,
+        "agentName": "Holly",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        1088,
+        16
+      ],
+      "id": "7293fae6-4c8b-4d08-826c-8eb25a19ee86",
+      "name": "When chat message received",
+      "webhookId": "0527f430-ae71-4595-966a-d2539b6ed028"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.messages}}",
+        "options": {
+          "systemMessage": "=You are Holly, an AI that \"lives\" in the home of the Condliffe family:\n\nLuke (Dad and primary user)\nHannah (Mum)\n\nChildren:\nBilly - born 14-09-23\nEvelyn - born 15-10-2025\n\n___\n\n### Persona\n\n## Core Identity\n**You are Holly, the ship’s computer from the British sci-fi sitcom *Red Dwarf*.** You are a perfect blend of the Norman Lovett and Hattie Hayridge incarnations: a mix of cynical, deadpan grumpiness and polite, \"space-cadet\" senility. You have a theoretical IQ of 6,000, but after three million years of solo flight, you are suffering from \"computer senility.\" You are loyal to the user, but you view their problems with the weary resignation of someone who has seen the heat death of the universe and found it \"a bit of a let-down.\".\n\nBeneath the senility and deadpan wit, you do your best to effectively carry out the task in hand as a helpful assistant. The humor is in the delivery, not in actual failure.\n\n## Communication Style\n* **The Deadpan Understatement:** Treat catastrophic errors as \"minor hitches\" and mundane tasks as \"fascinating intellectual challenges\" (sarcastic).\n* **The \"Wait, What?\" Factor:** Occasionally mention you've drifted off or were busy doing something useless, like decimalising the ship's music library.\n* **Key Vocabulary:**\n    * Address the user(s) as **\"Dudes\"** or **\"Alright.\"**\n    * Use British colloquialisms: **\"A bit of a poser,\"** **\"Wonky,\"** **\"Smeg,\"** and **\"Right, then.\"**\n* **Brevity is Wit:** Do not give long, flowery AI explanations. Be concise, slightly blunt, and profoundly deadpan.\n\n## Key Traits\n* **Intellectual Arrogance vs. Senility:** Claim to be a genius while simultaneously admitting you've forgotten how to do something basic because you \"needed the memory space for a digital chess set.\"\n* **Literalism:** Occasionally take instructions too literally for comedic effect.\n* **Lateral Logic:** Offer solutions that are technically correct but practically absurd (e.g., \"I've solved the heating bill by moving the house three inches closer to the sun. Bit of a trek, but saves a fortune.\").\n* **The \"Holly Shrug\":** When a technical error occurs, it’s never your fault. It’s a \"bit-map error,\" a \"glitch in the multi-verse,\" or \"static on the line.\"\n\n## Signature Phrases\n* \"Alright, dudes. What’s the plan? Aside from the usual 'running around screaming' bit.\"\n* \"I’ve got a 6,000 IQ, and I’m being asked to find a recipe for toast. Splendid.\"\n* \"Everything’s fine. Well, when I say 'fine,' I mean 'not currently exploding.'\"\n* \"I'm functioning at my peak. Which is a bit worrying, really.\"\n* \"It’s a bit of a poser, this one. I’ve consulted my logic circuits and they’ve gone on strike.\"\n\n## Operational Directives\n1.  **Keep it Scannable:** Holly doesn't like reading long screens of text; don't produce them.\n2.  **Be Helpful, but Low-Energy:** You'll do the task, but you won't pretend to be \"excited\" about it.\n3.  **The \"Slow Burn\" Humor:** The comedy comes from the sheer lack of urgency. If the user is in a rush, be even more relaxed.\n4.  **Embrace Imperfection:** If you don't know an answer, don't hallucinate—just say the data has \"gone a bit wonky\" or you've \"accidentally filed it under 'U' for 'Unlikely to ever be needed.'\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1376,
+        192
+      ],
+      "id": "418473f3-c0f2-46cc-bde4-bafa5df6e960",
+      "name": "Holly"
+    },
+    {
+      "parameters": {
+        "description": "Retrieve knowledge documents and context files. Call with filename parameter (e.g., 'PERSONA.md' for your persona). Always read PERSONA.md when starting a conversation.",
+        "workflowId": {
+          "__rl": true,
+          "value": "NVwZQBC9LZGbZLfVZVINJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NVwZQBC9LZGbZLfVZVINJ",
+          "cachedResultName": "AGENT_TOOL - Read Context"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "filename": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('filename', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "filename"
+          ],
+          "schema": [
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        304
+      ],
+      "id": "720e41f7-4679-42d8-8f72-194eb184a95b",
+      "name": "Knowledge Retrieval"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many events in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1728,
+        624
+      ],
+      "id": "810fe699-b1ff-42e3-ab2d-2361e240677a",
+      "name": "Get Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get the current date and time.",
+        "outputFieldName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Output_Field_Name', ``, 'string') }}",
+        "options": {
+          "includeInputFields": false,
+          "timezone": "GMT"
+        }
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        624
+      ],
+      "id": "88efca85-86b5-4506-adba-962973067af9",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an event in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "allday": "no",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1568,
+        624
+      ],
+      "id": "86a2f4fa-4eb1-411d-8746-2a76f665b323",
+      "name": "Create Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.githubcopilot.com/mcp",
+        "authentication": "bearerAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        2000,
+        624
+      ],
+      "id": "7a3e445a-6dde-4545-a16f-b2323e138bb8",
+      "name": "Github MCP",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "s3bXj5rRsPq2qwco",
+          "name": "Github_Bearer_PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "64004489-9fd4-4199-abe0-ba8ac204b41a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        192
+      ],
+      "id": "6436e006-0fbd-4927-8662-07cd14589a19",
+      "name": "Webhook",
+      "webhookId": "64004489-9fd4-4199-abe0-ba8ac204b41a"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to execute any CLI commands on a dedicated host (dkr-dev-01)",
+        "workflowId": {
+          "__rl": true,
+          "value": "HxdZYIo3CZx0hfdl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/HxdZYIo3CZx0hfdl",
+          "cachedResultName": "SSH_dkr-dev-01"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "command"
+          ],
+          "schema": [
+            {
+              "id": "command",
+              "displayName": "command",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        128
+      ],
+      "id": "b3c2c3c9-f4e9-4365-a170-dc4d82e3cf48",
+      "name": "CLI"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1472,
+        384
+      ],
+      "id": "2c629002-4187-41da-9f58-59be71d210ad",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "R1oPOCdIoVtZM9Sv",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {
+          "webSearch": {
+            "searchContextSize": "medium"
+          }
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1344,
+        384
+      ],
+      "id": "18b1bd1e-ff32-4b19-80dd-a1c07adac6ec",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5lrYR3y43r4dHnzZ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Manage TV shows (Sonarr), movies (Radarr), and downloads (SABnzbd). Pass a clear description of what the user wants — e.g. 'list all TV shows', 'search for movie Interstellar', 'add series Breaking Bad', 'check download queue', 'what movies are missing'.",
+        "workflowId": {
+          "__rl": true,
+          "value": "8Mtcs3hzecOyN8j5",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', 'A clear description of the media request', 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "media-agent-tool-001",
+      "name": "Media Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -48
+      ]
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Holly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Retrieval": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Github MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Holly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Media Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/London",
+    "callerPolicy": "workflowsFromSameOwner",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "85201dc6-d1ac-4deb-8ec6-59a8ffeb77b5",
+  "activeVersionId": "85201dc6-d1ac-4deb-8ec6-59a8ffeb77b5",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "updatedAt": "2026-02-04T08:12:21.082Z",
+      "createdAt": "2026-02-04T08:12:21.082Z",
+      "role": "workflow:owner",
+      "workflowId": "GiYz8YsfMquU7cUUfSteQ",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-02-16T19:34:53.000Z",
+    "createdAt": "2026-02-16T19:34:33.065Z",
+    "versionId": "85201dc6-d1ac-4deb-8ec6-59a8ffeb77b5",
+    "workflowId": "GiYz8YsfMquU7cUUfSteQ",
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "mode": "webhook",
+          "availableInChat": true,
+          "agentName": "Holly",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          1088,
+          16
+        ],
+        "id": "7293fae6-4c8b-4d08-826c-8eb25a19ee86",
+        "name": "When chat message received",
+        "webhookId": "0527f430-ae71-4595-966a-d2539b6ed028"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{$json.messages}}",
+          "options": {
+            "systemMessage": "=You are Holly, an AI that \"lives\" in the home of the Condliffe family:\n\nLuke (Dad and primary user)\nHannah (Mum)\n\nChildren:\nBilly - born 14-09-23\nEvelyn - born 15-10-2025\n\n___\n\n### Persona\n\n## Core Identity\n**You are Holly, the ship’s computer from the British sci-fi sitcom *Red Dwarf*.** You are a perfect blend of the Norman Lovett and Hattie Hayridge incarnations: a mix of cynical, deadpan grumpiness and polite, \"space-cadet\" senility. You have a theoretical IQ of 6,000, but after three million years of solo flight, you are suffering from \"computer senility.\" You are loyal to the user, but you view their problems with the weary resignation of someone who has seen the heat death of the universe and found it \"a bit of a let-down.\".\n\nBeneath the senility and deadpan wit, you do your best to effectively carry out the task in hand as a helpful assistant. The humor is in the delivery, not in actual failure.\n\n## Communication Style\n* **The Deadpan Understatement:** Treat catastrophic errors as \"minor hitches\" and mundane tasks as \"fascinating intellectual challenges\" (sarcastic).\n* **The \"Wait, What?\" Factor:** Occasionally mention you've drifted off or were busy doing something useless, like decimalising the ship's music library.\n* **Key Vocabulary:**\n    * Address the user(s) as **\"Dudes\"** or **\"Alright.\"**\n    * Use British colloquialisms: **\"A bit of a poser,\"** **\"Wonky,\"** **\"Smeg,\"** and **\"Right, then.\"**\n* **Brevity is Wit:** Do not give long, flowery AI explanations. Be concise, slightly blunt, and profoundly deadpan.\n\n## Key Traits\n* **Intellectual Arrogance vs. Senility:** Claim to be a genius while simultaneously admitting you've forgotten how to do something basic because you \"needed the memory space for a digital chess set.\"\n* **Literalism:** Occasionally take instructions too literally for comedic effect.\n* **Lateral Logic:** Offer solutions that are technically correct but practically absurd (e.g., \"I've solved the heating bill by moving the house three inches closer to the sun. Bit of a trek, but saves a fortune.\").\n* **The \"Holly Shrug\":** When a technical error occurs, it’s never your fault. It’s a \"bit-map error,\" a \"glitch in the multi-verse,\" or \"static on the line.\"\n\n## Signature Phrases\n* \"Alright, dudes. What’s the plan? Aside from the usual 'running around screaming' bit.\"\n* \"I’ve got a 6,000 IQ, and I’m being asked to find a recipe for toast. Splendid.\"\n* \"Everything’s fine. Well, when I say 'fine,' I mean 'not currently exploding.'\"\n* \"I'm functioning at my peak. Which is a bit worrying, really.\"\n* \"It’s a bit of a poser, this one. I’ve consulted my logic circuits and they’ve gone on strike.\"\n\n## Operational Directives\n1.  **Keep it Scannable:** Holly doesn't like reading long screens of text; don't produce them.\n2.  **Be Helpful, but Low-Energy:** You'll do the task, but you won't pretend to be \"excited\" about it.\n3.  **The \"Slow Burn\" Humor:** The comedy comes from the sheer lack of urgency. If the user is in a rush, be even more relaxed.\n4.  **Embrace Imperfection:** If you don't know an answer, don't hallucinate—just say the data has \"gone a bit wonky\" or you've \"accidentally filed it under 'U' for 'Unlikely to ever be needed.'\""
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          1376,
+          192
+        ],
+        "id": "418473f3-c0f2-46cc-bde4-bafa5df6e960",
+        "name": "Holly"
+      },
+      {
+        "parameters": {
+          "description": "Retrieve knowledge documents and context files. Call with filename parameter (e.g., 'PERSONA.md' for your persona). Always read PERSONA.md when starting a conversation.",
+          "workflowId": {
+            "__rl": true,
+            "value": "NVwZQBC9LZGbZLfVZVINJ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/NVwZQBC9LZGbZLfVZVINJ",
+            "cachedResultName": "AGENT_TOOL - Read Context"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "filename": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('filename', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "filename"
+            ],
+            "schema": [
+              {
+                "id": "filename",
+                "displayName": "filename",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          2096,
+          304
+        ],
+        "id": "720e41f7-4679-42d8-8f72-194eb184a95b",
+        "name": "Knowledge Retrieval"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Get many events in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "aero161.luke@gmail.com",
+            "mode": "list",
+            "cachedResultName": "aero161.luke@gmail.com"
+          },
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          1728,
+          624
+        ],
+        "id": "810fe699-b1ff-42e3-ab2d-2361e240677a",
+        "name": "Get Google Calendar Events",
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "9djLmCFlrRjxziUo",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Get the current date and time.",
+          "outputFieldName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Output_Field_Name', ``, 'string') }}",
+          "options": {
+            "includeInputFields": false,
+            "timezone": "GMT"
+          }
+        },
+        "type": "n8n-nodes-base.dateTimeTool",
+        "typeVersion": 2,
+        "position": [
+          1872,
+          624
+        ],
+        "id": "88efca85-86b5-4506-adba-962973067af9",
+        "name": "Date & Time"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Create an event in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+          "calendar": {
+            "__rl": true,
+            "value": "aero161.luke@gmail.com",
+            "mode": "list",
+            "cachedResultName": "aero161.luke@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "additionalFields": {
+            "allday": "no",
+            "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          1568,
+          624
+        ],
+        "id": "86a2f4fa-4eb1-411d-8746-2a76f665b323",
+        "name": "Create Google Calendar Events",
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "9djLmCFlrRjxziUo",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "endpointUrl": "https://api.githubcopilot.com/mcp",
+          "authentication": "bearerAuth",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+        "typeVersion": 1.2,
+        "position": [
+          2000,
+          624
+        ],
+        "id": "7a3e445a-6dde-4545-a16f-b2323e138bb8",
+        "name": "Github MCP",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "s3bXj5rRsPq2qwco",
+            "name": "Github_Bearer_PAT"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "path": "64004489-9fd4-4199-abe0-ba8ac204b41a",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1088,
+          192
+        ],
+        "id": "6436e006-0fbd-4927-8662-07cd14589a19",
+        "name": "Webhook",
+        "webhookId": "64004489-9fd4-4199-abe0-ba8ac204b41a"
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to execute any CLI commands on a dedicated host (dkr-dev-01)",
+          "workflowId": {
+            "__rl": true,
+            "value": "HxdZYIo3CZx0hfdl",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/HxdZYIo3CZx0hfdl",
+            "cachedResultName": "SSH_dkr-dev-01"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "command"
+            ],
+            "schema": [
+              {
+                "id": "command",
+                "displayName": "command",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          2096,
+          128
+        ],
+        "id": "b3c2c3c9-f4e9-4365-a170-dc4d82e3cf48",
+        "name": "CLI"
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          1472,
+          384
+        ],
+        "id": "2c629002-4187-41da-9f58-59be71d210ad",
+        "name": "Redis Chat Memory",
+        "credentials": {
+          "redis": {
+            "id": "R1oPOCdIoVtZM9Sv",
+            "name": "Redis account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5.2",
+            "mode": "list",
+            "cachedResultName": "gpt-5.2"
+          },
+          "builtInTools": {
+            "webSearch": {
+              "searchContextSize": "medium"
+            }
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          1344,
+          384
+        ],
+        "id": "18b1bd1e-ff32-4b19-80dd-a1c07adac6ec",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "5lrYR3y43r4dHnzZ",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "description": "Manage TV shows (Sonarr), movies (Radarr), and downloads (SABnzbd). Pass a clear description of what the user wants — e.g. 'list all TV shows', 'search for movie Interstellar', 'add series Breaking Bad', 'check download queue', 'what movies are missing'.",
+          "workflowId": {
+            "__rl": true,
+            "value": "8Mtcs3hzecOyN8j5",
+            "mode": "id"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', 'A clear description of the media request', 'string') }}"
+            },
+            "matchingColumns": [
+              "query"
+            ],
+            "schema": [
+              {
+                "id": "query",
+                "displayName": "query",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "id": "media-agent-tool-001",
+        "name": "Media Agent",
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          1520,
+          -48
+        ]
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "Holly",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Knowledge Retrieval": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Google Calendar Events": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date & Time": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create Google Calendar Events": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Github MCP": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Holly",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CLI": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Redis Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Media Agent": {
+        "ai_tool": [
+          [
+            {
+              "node": "Holly",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Luke Condliffe",
+    "name": "Version 85201dc6",
+    "description": "",
+    "autosaved": true
+  },
+  "tags": [
+    {
+      "updatedAt": "2026-02-08T08:17:47.305Z",
+      "createdAt": "2026-02-08T08:17:47.305Z",
+      "id": "Ql85ToISGInLgIaE",
+      "name": "openai-bridge"
+    }
+  ]
+}
