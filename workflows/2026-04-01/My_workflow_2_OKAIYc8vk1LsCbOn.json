@@ -1,0 +1,176 @@
+={
+  "updatedAt": "2025-08-02T14:33:28.000Z",
+  "createdAt": "2025-08-02T14:30:59.283Z",
+  "id": "OKAIYc8vk1LsCbOn",
+  "name": "My workflow 2",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        -192
+      ],
+      "id": "9a9bd3ac-8ce8-472b-a683-b40e6639ffee",
+      "name": "When chat message received",
+      "webhookId": "00b1ed42-1d6b-4885-a63d-b6b70ae502ce"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        -192
+      ],
+      "id": "9d32e81b-e239-41c1-9522-cbd91458a57c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-sonnet-4",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "1438eb3a-5263-4f3d-b214-712ea2613a1e",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "o8LHlHueJiKqTdCz",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        0
+      ],
+      "id": "9c133ae1-1b2e-45fd-a245-bb16c35c6f11",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "toolDescription": "docker ps",
+        "command": "docker ps"
+      },
+      "type": "n8n-nodes-base.executeCommandTool",
+      "typeVersion": 1,
+      "position": [
+        128,
+        192
+      ],
+      "id": "211ffaef-44b8-4864-ae2c-4ac70cf54598",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "serverTransport": "httpStreamable"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        192
+      ],
+      "id": "7803093b-0fc3-46cd-841e-edb6ac20f044",
+      "name": "MCP Client"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "31427582-1e85-4cc2-95f2-ca833826e5de",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-08-02T14:30:59.287Z",
+      "createdAt": "2025-08-02T14:30:59.287Z",
+      "role": "workflow:owner",
+      "workflowId": "OKAIYc8vk1LsCbOn",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
