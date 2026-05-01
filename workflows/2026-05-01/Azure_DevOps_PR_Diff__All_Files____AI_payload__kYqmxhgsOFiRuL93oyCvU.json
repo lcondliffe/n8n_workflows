@@ -1,0 +1,129 @@
+={
+  "updatedAt": "2026-02-04T08:11:37.000Z",
+  "createdAt": "2026-01-13T10:39:55.398Z",
+  "id": "kYqmxhgsOFiRuL93oyCvU",
+  "name": "Azure DevOps PR Diff (All Files -> AI payload)",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5a21ce7b-17c9-4628-8fe2-1aeee99092b0",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "organization",
+              "value": "={{ $env.AZDO_ORG || 'your-organization' }}"
+            },
+            {
+              "name": "project",
+              "value": "={{ $env.AZDO_PROJECT || 'your-project' }}"
+            },
+            {
+              "name": "repositoryId",
+              "value": "={{ $env.AZDO_REPO_ID || '00000000-0000-0000-0000-000000000000' }}"
+            },
+            {
+              "name": "apiVersion",
+              "value": "={{ $env.AZDO_API_VERSION || '7.1' }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "pullRequestId",
+              "value": "={{ Number($env.AZDO_PR_ID || 0) }}"
+            },
+            {
+              "name": "maxFiles",
+              "value": "={{ Number($env.AZDO_MAX_FILES || 0) }}"
+            },
+            {
+              "name": "maxCharsPerFile",
+              "value": "={{ Number($env.AZDO_MAX_CHARS_PER_FILE || 200000) }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "id": "0a8cb45a-df64-4e99-8677-30b6c2874b3a",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const cfg = $json;\n\nconst organization = String(cfg.organization || '').trim();\nconst project = String(cfg.project || '').trim();\nconst repositoryId = String(cfg.repositoryId || '').trim();\nconst pullRequestId = Number(cfg.pullRequestId || 0);\nconst apiVersion = String(cfg.apiVersion || '7.1').trim();\nconst maxFiles = Number(cfg.maxFiles || 0);\nconst maxCharsPerFile = Number(cfg.maxCharsPerFile || 200000);\n\nif (!organization) throw new Error('Missing `organization`');\nif (!project) throw new Error('Missing `project`');\nif (!repositoryId) throw new Error('Missing `repositoryId`');\nif (!pullRequestId) throw new Error('Missing `pullRequestId` (number)');\n\nconst pat = $env.AZDO_PAT || process.env.AZDO_PAT;\nif (!pat) {\n  throw new Error('Missing AZDO_PAT environment variable (Azure DevOps PAT with Code (Read) scope).');\n}\n\nconst auth = 'Basic ' + Buffer.from(':' + pat).toString('base64');\nconst baseUrl = `https://dev.azure.com/${encodeURIComponent(organization)}/${encodeURIComponent(project)}`;\n\nasync function adoGetJson(path, qs = {}) {\n  return await this.helpers.httpRequest({\n    method: 'GET',\n    url: baseUrl + path,\n    qs: { 'api-version': apiVersion, ...qs },\n    headers: {\n      Authorization: auth,\n      Accept: 'application/json',\n    },\n    json: true,\n  });\n}\n\nasync function getBlobText(blobId) {\n  if (!blobId) return '';\n\n  // Git blob API (returns raw bytes when requesting octet-stream).\n  const res = await this.helpers.httpRequest({\n    method: 'GET',\n    url: baseUrl + `/_apis/git/repositories/${encodeURIComponent(repositoryId)}/blobs/${blobId}`,\n    qs: {\n      'api-version': apiVersion,\n      '$format': 'octetstream',\n      resolveLfs: true,\n    },\n    headers: {\n      Authorization: auth,\n      Accept: 'application/octet-stream',\n    },\n    json: false,\n    encoding: 'utf8',\n  });\n\n  if (typeof res === 'string') return res;\n  if (Buffer.isBuffer(res)) return res.toString('utf8');\n  return String(res);\n}\n\nfunction normalizePath(p) {\n  return String(p || '').replace(/^\\/+/, '');\n}\n\nfunction textToLines(text) {\n  const norm = String(text || '').replace(/\\r\\n/g, '\\n');\n  const lines = norm.split('\\n');\n  if (lines.length && lines[lines.length - 1] === '') lines.pop();\n  return lines;\n}\n\nfunction myersDiff(a, b) {\n  const N = a.length;\n  const M = b.length;\n  const max = N + M;\n  const offset = max;\n\n  let v = new Array(2 * max + 1).fill(-1);\n  v[offset + 1] = 0;\n\n  const trace = [];\n\n  for (let d = 0; d <= max; d++) {\n    const v2 = new Array(2 * max + 1).fill(-1);\n\n    for (let k = -d; k <= d; k += 2) {\n      const idx = offset + k;\n      let x;\n\n      if (k === -d || (k !== d && v[idx - 1] < v[idx + 1])) {\n        // Down: insertion in B\n        x = v[idx + 1];\n      } else {\n        // Right: deletion from A\n        x = v[idx - 1] + 1;\n      }\n\n      let y = x - k;\n      while (x < N && y < M && a[x] === b[y]) {\n        x++;\n        y++;\n      }\n\n      v2[idx] = x;\n\n      if (x >= N && y >= M) {\n        trace.push(v2);\n        return backtrack(trace, a, b, offset);\n      }\n    }\n\n    trace.push(v2);\n    v = v2;\n  }\n\n  return [];\n}\n\nfunction backtrack(trace, a, b, offset) {\n  let x = a.length;\n  let y = b.length;\n\n  const edits = [];\n\n  for (let d = trace.length - 1; d > 0; d--) {\n    const vPrev = trace[d - 1];\n    const k = x - y;\n\n    let prevK;\n    if (k === -d || (k !== d && vPrev[offset + k - 1] < vPrev[offset + k + 1])) {\n      prevK = k + 1;\n    } else {\n      prevK = k - 1;\n    }\n\n    const prevX = vPrev[offset + prevK];\n    const prevY = prevX - prevK;\n\n    while (x > prevX && y > prevY) {\n      edits.push({ op: 'equal', line: a[x - 1] });\n      x--;\n      y--;\n    }\n\n    if (x === prevX) {\n      edits.push({ op: 'insert', line: b[y - 1] });\n      y--;\n    } else {\n      edits.push({ op: 'delete', line: a[x - 1] });\n      x--;\n    }\n  }\n\n  while (x > 0 && y > 0) {\n    edits.push({ op: 'equal', line: a[x - 1] });\n    x--;\n    y--;\n  }\n  while (x > 0) {\n    edits.push({ op: 'delete', line: a[x - 1] });\n    x--;\n  }\n  while (y > 0) {\n    edits.push({ op: 'insert', line: b[y - 1] });\n    y--;\n  }\n\n  edits.reverse();\n  return edits;\n}\n\nfunction unifiedDiff(oldText, newText, { context = 3 } = {}) {\n  const a = textToLines(oldText);\n  const b = textToLines(newText);\n  const ops = myersDiff(a, b);\n\n  let oldLine = a.length === 0 ? 0 : 1;\n  let newLine = b.length === 0 ? 0 : 1;\n\n  const annotated = [];\n  for (const op of ops) {\n    if (op.op === 'equal') {\n      annotated.push({ tag: ' ', text: op.line, oldLine, newLine });\n      oldLine++;\n      newLine++;\n    } else if (op.op === 'delete') {\n      annotated.push({ tag: '-', text: op.line, oldLine, newLine });\n      oldLine++;\n    } else {\n      annotated.push({ tag: '+', text: op.line, oldLine, newLine });\n      newLine++;\n    }\n  }\n\n  const changeIdx = [];\n  for (let i = 0; i < annotated.length; i++) {\n    if (annotated[i].tag !== ' ') changeIdx.push(i);\n  }\n\n  if (changeIdx.length === 0) return '';\n\n  const ranges = [];\n  for (const idx of changeIdx) {\n    const start = Math.max(0, idx - context);\n    const end = Math.min(annotated.length, idx + context + 1);\n\n    if (ranges.length === 0) {\n      ranges.push([start, end]);\n      continue;\n    }\n\n    const last = ranges[ranges.length - 1];\n    if (start <= last[1]) {\n      last[1] = Math.max(last[1], end);\n    } else {\n      ranges.push([start, end]);\n    }\n  }\n\n  const out = [];\n  for (const [start, end] of ranges) {\n    const chunk = annotated.slice(start, end);\n\n    const oldStart = chunk[0].oldLine;\n    const newStart = chunk[0].newLine;\n    const oldCount = chunk.filter((l) => l.tag !== '+').length;\n    const newCount = chunk.filter((l) => l.tag !== '-').length;\n\n    out.push(`@@ -${oldStart},${oldCount} +${newStart},${newCount} @@`);\n    for (const l of chunk) out.push(l.tag + l.text);\n  }\n\n  return out.join('\\n');\n}\n\nfunction buildGitPatch({\n  originalPath,\n  path,\n  changeType,\n  oldText,\n  newText,\n  context = 3,\n}) {\n  const oldRel = normalizePath(originalPath || path);\n  const newRel = normalizePath(path || originalPath);\n  const ct = String(changeType || '').toLowerCase();\n\n  const aName = oldRel ? `a/${oldRel}` : 'a/';\n  const bName = newRel ? `b/${newRel}` : 'b/';\n\n  let header = `diff --git ${aName} ${bName}\\n`;\n\n  if (ct === 'add') {\n    header += 'new file mode 100644\\n';\n  } else if (ct === 'delete') {\n    header += 'deleted file mode 100644\\n';\n  } else if (ct === 'rename' && oldRel !== newRel) {\n    header += `rename from ${oldRel}\\nrename to ${newRel}\\n`;\n  }\n\n  const fromLine = ct === 'add' ? '--- /dev/null' : `--- ${aName}`;\n  const toLine = ct === 'delete' ? '+++ /dev/null' : `+++ ${bName}`;\n\n  const hunks = unifiedDiff(oldText, newText, { context });\n\n  // Even if hunks are empty (e.g. rename-only), keep headers so an AI agent can still see it.\n  return header + fromLine + '\\n' + toLine + (hunks ? '\\n' + hunks + '\\n' : '\\n');\n}\n\nfunction isProbablyBinary(text) {\n  // Heuristic: embedded NUL bytes generally indicate binary.\n  return typeof text === 'string' && text.includes('\\u0000');\n}\n\n// 1) Pull request metadata\nconst pr = await adoGetJson(`/_apis/git/repositories/${encodeURIComponent(repositoryId)}/pullrequests/${pullRequestId}`);\n\n// 2) Get latest iteration id\nconst iterationsResp = await adoGetJson(`/_apis/git/repositories/${encodeURIComponent(repositoryId)}/pullRequests/${pullRequestId}/iterations`);\nconst iterations = Array.isArray(iterationsResp) ? iterationsResp : (iterationsResp.value || []);\nif (!iterations.length) throw new Error('No PR iterations returned');\n\nconst latestIteration = iterations.reduce((max, it) => (it.id > max.id ? it : max), iterations[0]);\nconst iterationId = latestIteration.id;\n\n// 3) Get all iteration changes (paged)\nlet changeEntries = [];\nlet skip = 0;\nlet top = 2000;\nlet pages = 0;\n\nwhile (true) {\n  const resp = await adoGetJson(\n    `/_apis/git/repositories/${encodeURIComponent(repositoryId)}/pullRequests/${pullRequestId}/iterations/${iterationId}/changes`,\n    { '$top': top, '$skip': skip }\n  );\n\n  changeEntries = changeEntries.concat(resp.changeEntries || []);\n  pages++;\n\n  if (resp.nextSkip && resp.nextSkip > 0) {\n    skip = resp.nextSkip;\n    top = resp.nextTop || top;\n  } else {\n    break;\n  }\n\n  if (pages > 100) throw new Error('Too many pages while listing PR changes (safety stop).');\n}\n\n// 4) Filter to file changes only\nlet fileChanges = changeEntries.filter((e) => {\n  const item = e.item || {};\n  if (!item.path) return false;\n  if (item.isFolder) return false;\n  if (String(item.gitObjectType || '').toLowerCase() === 'tree') return false;\n  return true;\n});\n\nif (maxFiles > 0) fileChanges = fileChanges.slice(0, maxFiles);\n\nconst files = [];\nconst errors = [];\nlet skippedBinary = 0;\nlet truncatedFiles = 0;\n\nfor (const e of fileChanges) {\n  const item = e.item || {};\n  const path = item.path;\n  const originalPath = e.originalPath || path;\n  const changeType = String(e.changeType || '').toLowerCase();\n\n  const oldBlobId = item.originalObjectId || null;\n  const newBlobId = item.objectId || null;\n\n  let oldText = '';\n  let newText = '';\n  let truncated = false;\n\n  try {\n    // Fetch old/new blob contents in parallel for each file.\n    const [o, n] = await Promise.all([getBlobText(oldBlobId), getBlobText(newBlobId)]);\n    oldText = o;\n    newText = n;\n\n    if (maxCharsPerFile > 0) {\n      if (oldText.length > maxCharsPerFile) {\n        oldText = oldText.slice(0, maxCharsPerFile) + '\\n/* TRUNCATED */\\n';\n        truncated = true;\n      }\n      if (newText.length > maxCharsPerFile) {\n        newText = newText.slice(0, maxCharsPerFile) + '\\n/* TRUNCATED */\\n';\n        truncated = true;\n      }\n    }\n  } catch (err) {\n    errors.push({\n      path,\n      message: String(err && err.message ? err.message : err),\n    });\n  }\n\n  if (truncated) truncatedFiles++;\n\n  const isBinary = isProbablyBinary(oldText) || isProbablyBinary(newText);\n  let patch = '';\n\n  if (isBinary) {\n    skippedBinary++;\n    const oldRel = normalizePath(originalPath || path);\n    const newRel = normalizePath(path || originalPath);\n    patch = `diff --git a/${oldRel} b/${newRel}\\nBinary files differ\\n`;\n  } else {\n    patch = buildGitPatch({\n      originalPath,\n      path,\n      changeType,\n      oldText,\n      newText,\n      context: 3,\n    });\n  }\n\n  files.push({\n    path,\n    originalPath,\n    changeType,\n    oldBlobId,\n    newBlobId,\n    truncated,\n    isBinary,\n    patch,\n  });\n}\n\nconst output = {\n  generatedAt: new Date().toISOString(),\n  azureDevOps: {\n    organization,\n    project,\n    repositoryId,\n    pullRequestId,\n    apiVersion,\n  },\n  pullRequest: {\n    pullRequestId: pr.pullRequestId,\n    title: pr.title,\n    description: pr.description,\n    status: pr.status,\n    creationDate: pr.creationDate,\n    createdBy: pr.createdBy && {\n      displayName: pr.createdBy.displayName,\n      uniqueName: pr.createdBy.uniqueName,\n      id: pr.createdBy.id,\n    },\n    sourceRefName: pr.sourceRefName,\n    targetRefName: pr.targetRefName,\n    lastMergeSourceCommit: pr.lastMergeSourceCommit && pr.lastMergeSourceCommit.commitId,\n    lastMergeTargetCommit: pr.lastMergeTargetCommit && pr.lastMergeTargetCommit.commitId,\n    mergeStatus: pr.mergeStatus,\n    url: pr.url,\n  },\n  iteration: {\n    id: iterationId,\n    totalIterations: iterations.length,\n  },\n  files,\n  stats: {\n    changedFiles: fileChanges.length,\n    emittedFiles: files.length,\n    skippedBinary,\n    truncatedFiles,\n    errors: errors.length,\n  },\n  errors,\n  // This is the object you would typically send to an AI node for code review.\n  aiReviewInput: {\n    instructions: [\n      'You are a senior engineer performing a thorough code review.',\n      'Review the diff patches for correctness, security, performance, and maintainability.',\n      'Call out bugs, edge cases, tests to add, and any risky changes.',\n      'Be specific: reference filenames and changed hunks.',\n    ],\n    pullRequestId,\n    title: pr.title,\n    files: files.map((f) => ({\n      path: f.path,\n      changeType: f.changeType,\n      patch: f.patch,\n    })),\n  },\n};\n\nreturn [{ json: output }];"
+      },
+      "id": "a320f735-a5e9-4219-88bc-1997bb491e06",
+      "name": "Fetch PR Diffs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch PR Diffs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "8fc20299-4ef4-492a-81fe-b6b356cddd41",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-13T10:39:55.403Z",
+      "createdAt": "2026-01-13T10:39:55.403Z",
+      "role": "workflow:owner",
+      "workflowId": "kYqmxhgsOFiRuL93oyCvU",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
