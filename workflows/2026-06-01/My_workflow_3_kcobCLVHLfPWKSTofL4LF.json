@@ -1,0 +1,68 @@
+={
+  "updatedAt": "2026-02-09T10:39:36.000Z",
+  "createdAt": "2026-02-05T16:12:17.309Z",
+  "id": "kcobCLVHLfPWKSTofL4LF",
+  "name": "My workflow 3",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fc86694b-e41d-45f8-a6f5-17a31a5cbe34",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7780dfbe-a898-42b3-80fd-843b64de7353",
+      "name": "Date & Time"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ca59e714-e7b8-4558-b974-ef0eab691f01",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-05T16:12:17.312Z",
+      "createdAt": "2026-02-05T16:12:17.312Z",
+      "role": "workflow:owner",
+      "workflowId": "kcobCLVHLfPWKSTofL4LF",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
