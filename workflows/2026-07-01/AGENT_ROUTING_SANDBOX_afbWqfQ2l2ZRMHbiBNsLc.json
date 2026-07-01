@@ -1,0 +1,115 @@
+={
+  "updatedAt": "2026-02-11T06:32:53.149Z",
+  "createdAt": "2026-02-11T06:27:12.249Z",
+  "id": "afbWqfQ2l2ZRMHbiBNsLc",
+  "name": "AGENT_ROUTING_SANDBOX",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        32
+      ],
+      "id": "081da193-4a12-42f4-bebb-fa3a489e2b30",
+      "name": "When chat message received",
+      "webhookId": "65fb9208-e0a9-4de3-a9db-2291ba9211d2"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "options": {
+          "categories": "Calendar, Mail, Home Control, Media",
+          "systemPromptTemplate": "You are highly intelligent and accurate sentiment analyzer placed upstream of sub-agents to decide where to route a request. Analyze the sentiment of the provided text. Categorize it into one of the following: {categories}. Use the provided formatting instructions. Only output the JSON.",
+          "includeDetailedResults": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.sentimentAnalysis",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "a3ac5278-3516-419a-88a7-8bdc569e4882",
+      "name": "Sentiment Analysis"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        240
+      ],
+      "id": "1d2ce2be-3ae0-4e6b-ac74-fa4dcaa636f3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5lrYR3y43r4dHnzZ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8b4d4c00-8397-4fff-9961-5b01e8bb7fae",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-11T06:27:12.256Z",
+      "createdAt": "2026-02-11T06:27:12.256Z",
+      "role": "workflow:owner",
+      "workflowId": "afbWqfQ2l2ZRMHbiBNsLc",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
