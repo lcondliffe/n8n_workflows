@@ -1,0 +1,44 @@
+={
+  "updatedAt": "2026-07-14T17:34:02.756Z",
+  "createdAt": "2026-07-14T17:34:02.756Z",
+  "id": "327rPSscDnLm1T2t",
+  "name": "My workflow 4",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.linearTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ad14c306-5102-48db-8a3d-97a26b3fa2be",
+      "name": "Linear Trigger",
+      "webhookId": "f859dca1-0449-4ca7-aa2c-ff7a263c9bd6"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "bfa2d998-5fdd-474b-866d-ff81d9414b6e",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-07-14T17:34:02.767Z",
+      "createdAt": "2026-07-14T17:34:02.767Z",
+      "role": "workflow:owner",
+      "workflowId": "327rPSscDnLm1T2t",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
