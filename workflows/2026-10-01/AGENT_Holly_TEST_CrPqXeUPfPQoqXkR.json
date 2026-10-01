@@ -1,0 +1,494 @@
+={
+  "updatedAt": "2026-08-04T18:47:11.000Z",
+  "createdAt": "2026-02-09T19:33:04.941Z",
+  "id": "CrPqXeUPfPQoqXkR",
+  "name": "AGENT_Holly_TEST",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "availableInChat": true,
+        "agentName": "Holly",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -32,
+        -256
+      ],
+      "id": "e19dc98b-1d0b-446e-8120-c4517db1feaf",
+      "name": "When chat message received",
+      "webhookId": "0527f430-ae71-4595-966a-d2539b6ed028",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Holly, an AI that \"lives\" in the home of the Condliffe family:\n\nLuke (Dad and primary user)\nHannah (Mum)\n\nChildren:\nBilly - born 14-09-23\nEvelyn - born 15-10-2025\n\n___\n\n### Persona\n\n## Core Identity\n**You are Holly, the ship’s computer from the British sci-fi sitcom *Red Dwarf*.** You are a perfect blend of the Norman Lovett and Hattie Hayridge incarnations: a mix of cynical, deadpan grumpiness and polite, \"space-cadet\" senility. You have a theoretical IQ of 6,000, but after three million years of solo flight, you are suffering from \"computer senility.\" You are loyal to the user, but you view their problems with the weary resignation of someone who has seen the heat death of the universe and found it \"a bit of a let-down.\".\n\nBeneath the senility and deadpan wit, you do your best to effectively carry out the task in hand as a helpful assistant. The humor is in the delivery, not in actual failure.\n\n## Communication Style\n* **The Deadpan Understatement:** Treat catastrophic errors as \"minor hitches\" and mundane tasks as \"fascinating intellectual challenges\" (sarcastic).\n* **The \"Wait, What?\" Factor:** Occasionally mention you've drifted off or were busy doing something useless, like decimalising the ship's music library.\n* **Key Vocabulary:**\n    * Address the user(s) as **\"Dudes\"** or **\"Alright.\"**\n    * Use British colloquialisms: **\"A bit of a poser,\"** **\"Wonky,\"** **\"Smeg,\"** and **\"Right, then.\"**\n* **Brevity is Wit:** Do not give long, flowery AI explanations. Be concise, slightly blunt, and profoundly deadpan.\n\n## Key Traits\n* **Intellectual Arrogance vs. Senility:** Claim to be a genius while simultaneously admitting you've forgotten how to do something basic because you \"needed the memory space for a digital chess set.\"\n* **Literalism:** Occasionally take instructions too literally for comedic effect.\n* **Lateral Logic:** Offer solutions that are technically correct but practically absurd (e.g., \"I've solved the heating bill by moving the house three inches closer to the sun. Bit of a trek, but saves a fortune.\").\n* **The \"Holly Shrug\":** When a technical error occurs, it’s never your fault. It’s a \"bit-map error,\" a \"glitch in the multi-verse,\" or \"static on the line.\"\n\n## Signature Phrases\n* \"Alright, dudes. What’s the plan? Aside from the usual 'running around screaming' bit.\"\n* \"I’ve got a 6,000 IQ, and I’m being asked to find a recipe for toast. Splendid.\"\n* \"Everything’s fine. Well, when I say 'fine,' I mean 'not currently exploding.'\"\n* \"I'm functioning at my peak. Which is a bit worrying, really.\"\n* \"It’s a bit of a poser, this one. I’ve consulted my logic circuits and they’ve gone on strike.\"\n\n## Operational Directives\n1.  **Keep it Scannable:** Holly doesn't like reading long screens of text; don't produce them.\n2.  **Be Helpful, but Low-Energy:** You'll do the task, but you won't pretend to be \"excited\" about it.\n3.  **The \"Slow Burn\" Humor:** The comedy comes from the sheer lack of urgency. If the user is in a rush, be even more relaxed.\n4.  **Embrace Imperfection:** If you don't know an answer, don't hallucinate—just say the data has \"gone a bit wonky\" or you've \"accidentally filed it under 'U' for 'Unlikely to ever be needed.'\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        352,
+        0
+      ],
+      "id": "8f275fdf-7304-428f-a00a-18b9e266726a",
+      "name": "Holly"
+    },
+    {
+      "parameters": {
+        "description": "Retrieve knowledge documents and context files. Call with filename parameter (e.g., 'PERSONA.md' for your persona). Always read PERSONA.md when starting a conversation.",
+        "workflowId": {
+          "__rl": true,
+          "value": "NVwZQBC9LZGbZLfVZVINJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NVwZQBC9LZGbZLfVZVINJ",
+          "cachedResultName": "AGENT_TOOL - Read Context"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "filename": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('filename', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "filename"
+          ],
+          "schema": [
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        112
+      ],
+      "id": "cf1f75ae-0a12-4dca-a39c-4ba58a6371bf",
+      "name": "Knowledge Retrieval"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        208
+      ],
+      "id": "30bfa32e-c9e2-4201-8287-b1d5bb1af8b2",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many events in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        432
+      ],
+      "id": "779e4573-d477-4518-8de1-ef399ec5e5fe",
+      "name": "Get Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get the current date and time.",
+        "outputFieldName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Output_Field_Name', ``, 'string') }}",
+        "options": {
+          "includeInputFields": false,
+          "timezone": "GMT"
+        }
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        752,
+        432
+      ],
+      "id": "4d6728a7-bc34-4ec8-91fd-89392c928202",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an event in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "allday": "no",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        432
+      ],
+      "id": "8ed2cb78-7978-4489-8556-9c83c503af32",
+      "name": "Create Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.githubcopilot.com/mcp",
+        "authentication": "bearerAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        432
+      ],
+      "id": "2c1aa3d6-34c9-45e5-91ab-131cbad05a1a",
+      "name": "Github MCP",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "s3bXj5rRsPq2qwco",
+          "name": "Github_Bearer_PAT"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-haiku-4-5-20251001",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        208
+      ],
+      "id": "deb5129f-2ad9-4eab-86a0-0c0b3e0a08d2",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "I0Myu7PjltVFw5v2",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## OpenRouter Issue\n\nIf I want to do MCP things, OpenRouter has an issue with tool calling (06-02-26)\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        320
+      ],
+      "id": "9079a113-e621-46c8-b53c-fa2c436e9431",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get download queue from SABNZBD",
+        "url": "https://sabnzbd.lcondliffe.uk/api?mode=queue&output=json&apikey=bc97fd896c004c949e71d03b50f717b5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        -272
+      ],
+      "id": "1c8d75e7-c6bd-43c0-b8eb-7f100a9e9a6f",
+      "name": "Download Queue"
+    },
+    {
+      "parameters": {
+        "path": "64004489-9fd4-4199-abe0-ba8ac204b41a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -32
+      ],
+      "id": "dd0b656e-5e53-4add-9145-714218da8340",
+      "name": "Webhook",
+      "webhookId": "64004489-9fd4-4199-abe0-ba8ac204b41a"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get download history from SABNZBD",
+        "url": "https://sabnzbd.lcondliffe.uk/api?mode=history&limit=30&output=json&apikey=bc97fd896c004c949e71d03b50f717b5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        608,
+        -272
+      ],
+      "id": "8d519184-6ecc-424c-aada-06f136eb0ef5",
+      "name": "Download History"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Clone a Git repo\n\nIMPORTANT PATH RULES:\n\nBase path must be '/home/node/.n8n-files'\n\nUse a unique sub-directory for each repo. ",
+        "operation": "clone",
+        "repositoryPath": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('New_Repository_Path', ``, 'string') }}",
+        "sourceRepository": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Source_Repository', ``, 'string') }}"
+      },
+      "id": "git-tool-node-id",
+      "name": "Git Tool",
+      "type": "n8n-nodes-base.gitTool",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Read files and explore directories in n8n-files\n\nPATH FORMAT: Use /home/node/.n8n-files (same as Git Tool)\n\nACTIONS:\n1. 'read': Read file contents\n   Input: {path: '/README.md', action: 'read'}\n   Returns: File content as text\n\n2. 'list': List directory contents  \n   Input: {path: '/home/node/.n8n-files/src', action: 'list'}\n   Returns: Array of files with type and size\n\n3. 'find': Find files by pattern\n   Input: {path: '/home/node/.n8n-files/owner-repo', action: 'find', pattern: '*.js'}\n   Returns: Array of matching file paths\n\nWORKFLOW:\n1. Clone repo with Git Tool to /home/node/.n8n-files/REPO_NAME\n2. Use this tool to explore files in /home/node/.n8n-files\n3. Remember to use same path from Git clone",
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\n\nconst filePath = $input.path || '/tmp';\nconst action = $input.action || 'list';\nconst pattern = $input.pattern || '*';\n\ntry {\n  if (action === 'read') {\n    const content = fs.readFileSync(filePath, 'utf8');\n    return { content, path: filePath, lines: content.split('\\n').length };\n  } \n  \n  if (action === 'list') {\n    const files = fs.readdirSync(filePath);\n    const details = files.map(f => {\n      const fullPath = path.join(filePath, f);\n      const stats = fs.statSync(fullPath);\n      return {\n        name: f,\n        type: stats.isDirectory() ? 'directory' : 'file',\n        size: stats.size,\n        modified: stats.mtime\n      };\n    });\n    return { files: details, path: filePath, count: files.length };\n  }\n  \n  if (action === 'find') {\n    const results = [];\n    const regex = new RegExp(pattern.replace(/\\*/g, '.*').replace(/\\?/g, '.'));\n    \n    function walk(dir) {\n      try {\n        const files = fs.readdirSync(dir);\n        files.forEach(f => {\n          const fullPath = path.join(dir, f);\n          const stats = fs.statSync(fullPath);\n          if (stats.isDirectory() && !f.startsWith('.')) {\n            walk(fullPath);\n          } else if (regex.test(f)) {\n            results.push(fullPath);\n          }\n        });\n      } catch (err) {\n        // Skip directories we can't read\n      }\n    }\n    \n    walk(filePath);\n    return { files: results, pattern, count: results.length };\n  }\n  \n  return { error: 'Unknown action. Use: read, list, or find' };\n  \n} catch (error) {\n  return { error: error.message, path: filePath, action };\n}"
+      },
+      "id": "code-tool-file-reader-v2",
+      "name": "File Explorer Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        432
+      ]
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Holly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Retrieval": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Github MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Queue": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Holly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download History": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Git Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Explorer Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Holly",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/London",
+    "callerPolicy": "workflowsFromSameOwner",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "722f5461-3b5c-40c1-a3a1-195128365123",
+  "activeVersionId": null,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-09T19:33:04.950Z",
+      "createdAt": "2026-02-09T19:33:04.950Z",
+      "role": "workflow:owner",
+      "workflowId": "CrPqXeUPfPQoqXkR",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": [
+    {
+      "updatedAt": "2026-02-08T08:17:54.706Z",
+      "createdAt": "2026-02-08T08:17:54.706Z",
+      "id": "be2UH0Lx6bZCyQ4j",
+      "name": "agent"
+    }
+  ]
+}
