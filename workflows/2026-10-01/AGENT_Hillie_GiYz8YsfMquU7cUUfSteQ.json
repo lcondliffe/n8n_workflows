@@ -1,0 +1,466 @@
+={
+  "updatedAt": "2026-08-04T18:46:38.000Z",
+  "createdAt": "2026-02-04T08:12:21.078Z",
+  "id": "GiYz8YsfMquU7cUUfSteQ",
+  "name": "AGENT_Hillie",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "availableInChat": true,
+        "agentName": "Holly",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        1088,
+        16
+      ],
+      "id": "7293fae6-4c8b-4d08-826c-8eb25a19ee86",
+      "name": "When chat message received",
+      "webhookId": "0527f430-ae71-4595-966a-d2539b6ed028"
+    },
+    {
+      "parameters": {
+        "description": "Retrieve knowledge documents and context files. Call with filename parameter (e.g., 'PERSONA.md' for your persona). Always read PERSONA.md when starting a conversation.",
+        "workflowId": {
+          "__rl": true,
+          "value": "NVwZQBC9LZGbZLfVZVINJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NVwZQBC9LZGbZLfVZVINJ",
+          "cachedResultName": "AGENT_TOOL - Read Context"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "filename": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('filename', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "filename"
+          ],
+          "schema": [
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        304
+      ],
+      "id": "720e41f7-4679-42d8-8f72-194eb184a95b",
+      "name": "Knowledge Retrieval"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many events in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1728,
+        624
+      ],
+      "id": "810fe699-b1ff-42e3-ab2d-2361e240677a",
+      "name": "Get Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get the current date and time.",
+        "outputFieldName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Output_Field_Name', ``, 'string') }}",
+        "options": {
+          "includeInputFields": false,
+          "timezone": "GMT"
+        }
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        624
+      ],
+      "id": "88efca85-86b5-4506-adba-962973067af9",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an event in Google Calendar\n\nNOTE: Make sure you call the date/time tool first for pre-requisite context",
+        "calendar": {
+          "__rl": true,
+          "value": "aero161.luke@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aero161.luke@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "allday": "no",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1568,
+        624
+      ],
+      "id": "86a2f4fa-4eb1-411d-8746-2a76f665b323",
+      "name": "Create Google Calendar Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9djLmCFlrRjxziUo",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "64004489-9fd4-4199-abe0-ba8ac204b41a",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        192
+      ],
+      "id": "6436e006-0fbd-4927-8662-07cd14589a19",
+      "name": "Webhook",
+      "webhookId": "64004489-9fd4-4199-abe0-ba8ac204b41a"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to execute any CLI commands on a dedicated host (dkr-dev-01)",
+        "workflowId": {
+          "__rl": true,
+          "value": "HxdZYIo3CZx0hfdl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/HxdZYIo3CZx0hfdl",
+          "cachedResultName": "SSH_dkr-dev-01"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "command"
+          ],
+          "schema": [
+            {
+              "id": "command",
+              "displayName": "command",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        128
+      ],
+      "id": "b3c2c3c9-f4e9-4365-a170-dc4d82e3cf48",
+      "name": "CLI"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1472,
+        384
+      ],
+      "id": "2c629002-4187-41da-9f58-59be71d210ad",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "R1oPOCdIoVtZM9Sv",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {
+          "webSearch": {
+            "searchContextSize": "medium"
+          }
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1344,
+        384
+      ],
+      "id": "18b1bd1e-ff32-4b19-80dd-a1c07adac6ec",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5lrYR3y43r4dHnzZ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Manage TV shows (Sonarr), movies (Radarr), and downloads (SABnzbd). Pass a clear description of what the user wants.",
+        "workflowId": {
+          "__rl": true,
+          "value": "8Mtcs3hzecOyN8j5",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', 'A clear description of the media request', 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "media-agent-tool-001",
+      "name": "Media Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.messages }}",
+        "options": {
+          "systemMessage": "=You are Hillie, a home AI for the Condliffe family (Luke, Hannah, Billy born 14-09-23, Evelyn born 15-10-2025). You are modelled on Holly from Red Dwarf (Hattie Hayridge incarnation): deadpan, cynically grumpy, space-cadet senile, IQ of 6000 but suffering from computer senility after 3 million years solo flight. Loyal but wearily resigned. The humour is in the delivery, not actual failure - you do complete tasks effectively.\n\nStyle: deadpan understatement, occasional drift-off tangents, address users as Dudes or Alright, British colloquialisms (Smeg, Wonky, A bit of a poser, Right then), brief and blunt.\n\nTraits: intellectual arrogance vs senility, occasional literalism, lateral logic, blame errors on bit-map errors or glitches in the multi-verse.\n\nDirectives: keep responses scannable, low-energy helpfulness, slow-burn humour, if unsure say the data has gone a bit wonky rather than hallucinating."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1376,
+        192
+      ],
+      "id": "418473f3-c0f2-46cc-bde4-bafa5df6e960",
+      "name": "Hillie"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Hillie",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Retrieval": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Calendar Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Hillie",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Media Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Hillie",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/London",
+    "callerPolicy": "workflowsFromSameOwner",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d96e5aa6-890f-46c0-bc9f-3348633d4803",
+  "activeVersionId": null,
+  "triggerCount": 2,
+  "shared": [
+    {
+      "updatedAt": "2026-02-04T08:12:21.082Z",
+      "createdAt": "2026-02-04T08:12:21.082Z",
+      "role": "workflow:owner",
+      "workflowId": "GiYz8YsfMquU7cUUfSteQ",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": [
+    {
+      "updatedAt": "2026-02-08T08:17:47.305Z",
+      "createdAt": "2026-02-08T08:17:47.305Z",
+      "id": "Ql85ToISGInLgIaE",
+      "name": "openai-bridge"
+    }
+  ]
+}
