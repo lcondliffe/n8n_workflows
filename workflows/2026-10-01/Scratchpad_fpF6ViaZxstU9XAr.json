@@ -1,0 +1,31 @@
+={
+  "updatedAt": "2026-08-04T18:52:05.049Z",
+  "createdAt": "2026-08-04T18:52:05.049Z",
+  "id": "fpF6ViaZxstU9XAr",
+  "name": "Scratchpad",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a934499a-4449-46df-b139-7df3b263bf7a",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-08-04T18:52:05.053Z",
+      "createdAt": "2026-08-04T18:52:05.053Z",
+      "role": "workflow:owner",
+      "workflowId": "fpF6ViaZxstU9XAr",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
