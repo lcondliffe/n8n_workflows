@@ -1,0 +1,84 @@
+={
+  "updatedAt": "2026-08-04T18:47:17.000Z",
+  "createdAt": "2026-02-11T07:04:36.334Z",
+  "id": "HxdZYIo3CZx0hfdl",
+  "name": "SSH_dkr-dev-01",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "={{ $json.command }}",
+        "cwd": "/home/luke"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -176
+      ],
+      "id": "36e5bb50-c202-43f5-a884-c27d1ce5a1f6",
+      "name": "SSH_dkr-dev-01",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "7fEqiS4syZdP7UBt",
+          "name": "dkr-dev-01"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "command"
+            }
+          ]
+        }
+      },
+      "id": "90862e71-6527-4d0c-9377-ae807ecf383b",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        1648,
+        -176
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "SSH_dkr-dev-01",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "e141de42-4ceb-46a7-aab4-63febd364e22",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-11T07:04:36.338Z",
+      "createdAt": "2026-02-11T07:04:36.338Z",
+      "role": "workflow:owner",
+      "workflowId": "HxdZYIo3CZx0hfdl",
+      "projectId": "VuxeuuVfzSpqhsPG"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
